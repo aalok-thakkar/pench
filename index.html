@@ -437,54 +437,16 @@ function parseAkshars(word) {
   return akshars;
 }
 
-// --- Dictionary --------------------------------------------------------------
-let dict = null;         // { "2": { "अ,अ": ["कर",...] }, "3": {...} }
-const wordSet = new Set();
-
-async function loadDictionary() {
-  const res = await fetch('words.json');
-  if (!res.ok) throw new Error('dictionary load failed');
-  dict = await res.json();
-  for (const patterns of Object.values(dict)) {
-    for (const list of Object.values(patterns)) {
-      for (const w of list) wordSet.add(w);
-    }
-  }
-}
-
-// --- Puzzle selection --------------------------------------------------------
-function hashString(s) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
-  return Math.abs(h);
-}
-
-function selectPuzzle(dateStr) {
-  const entries = [];
-  for (const nStr of Object.keys(dict)) {
-    const n = +nStr;
-    for (const [key, words] of Object.entries(dict[nStr])) {
-      entries.push({ n, key, words });
-    }
-  }
-  const good = entries.filter(e => e.words.length >= 5 && e.words.length <= 15);
-  const pool = good.length ? good : entries.filter(e => e.words.length >= 3);
-  const chosen = pool[hashString(dateStr) % pool.length];
-  return {
-    aksharCount: chosen.n,
-    pattern: chosen.key.split(','),
-    answers: chosen.words.slice(),
-    dateStr
-  };
-}
-
-function todayString() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return y + '-' + m + '-' + day;
-}
+// --- Demo puzzle -----------------------------------------------------------
+const puzzle = {
+  aksharCount: 2,
+  pattern: ['ओ', 'ई'],
+  answers: [
+    'रोटी','चोटी','मोती','धोती','बोली','होली','गोली','गोदी',
+    'कोठी','मोटी','टोली','ढोली','चोरी','जोड़ी','मोरी','पोती',
+    'सोती','खोई','रोई','भोली','सोची','कोई','होती'
+  ]
+};
 
 // --- Presentation helpers ----------------------------------------------------
 const HINDI_COUNTS = ['', 'एक', 'दो', 'तीन', 'चार', 'पाँच', 'छह', 'सात', 'आठ', 'नौ', 'दस'];
@@ -499,11 +461,16 @@ function patternBoxContent(v) {
 }
 
 // --- Puzzle state ------------------------------------------------------------
-let puzzle = null;
-let puzzleKey = '';
+const puzzleKey = 'pench-progress-demo';
 let foundWords = new Set();
 let finished = false;
-
+(function loadSaved() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(puzzleKey) || 'null');
+    if (saved && saved.found) foundWords = new Set(saved.found);
+    if (saved && saved.finished) finished = true;
+  } catch (e) {}
+})();
 function saveState() {
   try {
     localStorage.setItem(puzzleKey, JSON.stringify({
@@ -529,7 +496,7 @@ const summary = $('summary');
 
 // --- Render ------------------------------------------------------------------
 function renderPuzzle() {
-  puzzleTag.textContent = 'आज का पेंच · ' + puzzle.dateStr;
+  puzzleTag.textContent = '';
   const word = HINDI_COUNTS[puzzle.aksharCount] || String(puzzle.aksharCount);
   countLine.innerHTML = '<span class="count-word">' + word + '</span> अक्षर';
   patternBoxes.innerHTML = '';
@@ -559,7 +526,7 @@ function setFeedback(text, kind) {
 
 // --- Interactions ------------------------------------------------------------
 function submitWord() {
-  if (!puzzle || finished) return;
+  if (finished) return;
   const raw = wordInput.value.trim();
   if (!raw) return;
   const w = raw.normalize('NFC');
@@ -576,12 +543,6 @@ function submitWord() {
     renderFound();
     wordInput.value = '';
     saveState();
-    return;
-  }
-
-  if (wordSet.has(w)) {
-    setFeedback('✗ यह शब्द इस पेंच में फिट नहीं बैठता।', 'bad');
-    wordInput.value = '';
     return;
   }
 
@@ -633,7 +594,7 @@ function finishPuzzle() {
 
   const shareLine = document.createElement('div');
   shareLine.className = 'share-line';
-  const shareText = 'पेंच · ' + puzzle.dateStr + ' · ' + foundWords.size + '/' + puzzle.answers.length;
+  const shareText = 'पेंच · ' + foundWords.size + '/' + puzzle.answers.length;
   shareLine.textContent = shareText;
   const shareBtn = document.createElement('button');
   shareBtn.type = 'button';
@@ -673,8 +634,7 @@ const CONSONANTS = [
 ];
 
 function insertNextAkshar(consonant) {
-  if (!puzzle) return;
-  const current = parseAkshars(wordInput.value);
+    const current = parseAkshars(wordInput.value);
   const pos = current.length;
   if (pos >= puzzle.pattern.length) return;
   const vowel = puzzle.pattern[pos];
@@ -701,32 +661,11 @@ function buildKeyboard() {
   kbd.appendChild(row);
 }
 
-// --- Init --------------------------------------------------------------------
-async function init() {
-  puzzleTag.textContent = 'लोड हो रहा है…';
-  countLine.textContent = '';
-  patternBoxes.innerHTML = '';
-  try {
-    await loadDictionary();
-  } catch (e) {
-    puzzleTag.textContent = 'शब्दकोश लोड नहीं हुआ';
-    return;
-  }
-  const dateStr = todayString();
-  puzzle = selectPuzzle(dateStr);
-  puzzleKey = 'pench-progress-' + dateStr;
-  try {
-    const saved = JSON.parse(localStorage.getItem(puzzleKey) || 'null');
-    if (saved && saved.found) foundWords = new Set(saved.found);
-    if (saved && saved.finished) finished = true;
-  } catch (e) {}
-  renderPuzzle();
-  renderFound();
-  buildKeyboard();
-  if (finished) finishPuzzle();
-  wordInput.focus();
-}
-init();
+renderPuzzle();
+renderFound();
+buildKeyboard();
+if (finished) finishPuzzle();
+wordInput.focus();
 </script>
 </body>
 </html>
