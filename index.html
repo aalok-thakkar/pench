@@ -6,7 +6,7 @@
 <title>पेंच</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --white: #ffffff;
@@ -19,7 +19,7 @@
   --good: #147d3a;
   --bad: #b03030;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --deva: 'Noto Sans Devanagari', 'Inter', sans-serif;
+  --deva: 'Mukta', 'Noto Sans Devanagari', 'Inter', sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--white); color: var(--ink); }
@@ -59,10 +59,8 @@ body {
 }
 .instructions summary {
   cursor: pointer;
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--deva);
+  font-size: 0.95rem;
   color: var(--navy);
   font-weight: 500;
   list-style: none;
@@ -102,23 +100,21 @@ body {
   padding: 32px 28px;
 }
 .puzzle-tag {
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--deva);
+  font-size: 0.9rem;
   color: var(--navy);
   text-align: center;
   margin-bottom: 20px;
+  font-weight: 500;
 }
 .count-line {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--ink-dim);
   margin-bottom: 22px;
-  font-family: var(--sans);
-  letter-spacing: 0.08em;
+  font-family: var(--deva);
 }
-.count-line .count-word { font-family: var(--deva); color: var(--ink); font-size: 1.15rem; }
+.count-line .count-word { color: var(--ink); }
 
 .pattern-boxes {
   display: flex;
@@ -175,9 +171,9 @@ body {
 
 .feedback {
   min-height: 1.5em;
-  font-size: 0.95rem;
+  font-size: 1rem;
   text-align: center;
-  font-family: var(--sans);
+  font-family: var(--deva);
   color: var(--ink-dim);
   margin-bottom: 24px;
 }
@@ -186,17 +182,16 @@ body {
 
 .found { margin-top: 8px; }
 .found-head {
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--deva);
+  font-size: 0.95rem;
   color: var(--ink-dim);
   margin: 0 0 12px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  font-weight: 500;
 }
-.found-head b { color: var(--navy); font-weight: 500; font-family: var(--sans); }
+.found-head b { color: var(--navy); font-weight: 600; }
 .word-list {
   display: flex;
   flex-wrap: wrap;
@@ -248,34 +243,31 @@ body {
   margin-bottom: 4px;
 }
 .summary .score-caption {
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--deva);
+  font-size: 1rem;
   color: var(--ink-dim);
   margin-bottom: 16px;
 }
 .summary .missed-head {
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--deva);
+  font-size: 0.95rem;
   color: var(--ink-dim);
   margin: 20px 0 12px;
+  font-weight: 500;
 }
 .summary .word-list { justify-content: center; }
 .summary .share-line {
   margin-top: 20px;
-  font-family: var(--sans);
-  font-size: 0.85rem;
+  font-family: var(--deva);
+  font-size: 0.95rem;
   color: var(--ink-dim);
 }
 .summary .share-line button {
   background: transparent;
   border: 1px solid var(--rule);
   padding: 6px 14px;
-  font-family: inherit;
-  font-size: 0.85rem;
+  font-family: var(--deva);
+  font-size: 0.95rem;
   cursor: pointer;
   margin-left: 6px;
   color: var(--ink);
@@ -324,16 +316,6 @@ body {
   text-transform: uppercase;
   padding: 8px 12px;
   min-width: 0;
-}
-
-.footer {
-  margin-top: 32px;
-  text-align: center;
-  color: var(--ink-dim);
-  font-size: 0.78rem;
-  font-family: var(--sans);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 @media (max-width: 480px) {
@@ -390,8 +372,6 @@ body {
 
     <div class="summary" id="summary" hidden></div>
   </div>
-
-  <div class="footer">देवनागरी शब्द खोज खेल</div>
 </div>
 
 <script>
