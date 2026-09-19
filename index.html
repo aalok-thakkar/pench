@@ -908,88 +908,33 @@ const CONSONANTS = [
   'श','ष','स','ह',
   'ज़','ड़','ढ़','फ़'
 ];
-const MATRAS = ['ा','ि','ी','ु','ू','े','ै','ो','ौ'];
-const VOWELS = ['अ','आ','इ','ई','उ','ऊ','ए','ऐ','ओ','औ'];
-const MARKS = ['ं','ँ','ः','्']; // anusvara, chandrabindu, visarga, halant
 
-function insertAtCursor(ch) {
-  const el = wordInput;
-  const start = typeof el.selectionStart === 'number' ? el.selectionStart : el.value.length;
-  const end = typeof el.selectionEnd === 'number' ? el.selectionEnd : el.value.length;
-  el.value = el.value.slice(0, start) + ch + el.value.slice(end);
-  const pos = start + ch.length;
-  el.focus();
-  try { el.setSelectionRange(pos, pos); } catch (e) {}
-}
-
-function backspaceAtCursor() {
-  const el = wordInput;
-  const start = typeof el.selectionStart === 'number' ? el.selectionStart : el.value.length;
-  const end = typeof el.selectionEnd === 'number' ? el.selectionEnd : el.value.length;
-  if (start !== end) {
-    el.value = el.value.slice(0, start) + el.value.slice(end);
-    el.focus();
-    try { el.setSelectionRange(start, start); } catch (e) {}
-    return;
-  }
-  if (start === 0) return;
-  el.value = el.value.slice(0, start - 1) + el.value.slice(start);
-  el.focus();
-  try { el.setSelectionRange(start - 1, start - 1); } catch (e) {}
+function insertNextAkshar(consonant) {
+  const current = parseAkshars(wordInput.value);
+  const pos = current.length;
+  if (pos >= puzzle.pattern.length) return;
+  const vowel = puzzle.pattern[pos];
+  const matra = vowel === 'अ' ? '' : VOWEL_TO_MATRA[vowel];
+  wordInput.value = wordInput.value + consonant + (matra || '');
+  wordInput.focus();
+  try { wordInput.setSelectionRange(wordInput.value.length, wordInput.value.length); } catch (e) {}
 }
 
 function buildKeyboard() {
   const kbd = document.getElementById('keyboard');
   kbd.innerHTML = '';
-  function section(labelText, chars, extraClass) {
-    const label = document.createElement('div');
-    label.className = 'kbd-label';
-    label.textContent = labelText;
-    kbd.appendChild(label);
-    const row = document.createElement('div');
-    row.className = 'kbd-row';
-    chars.forEach(ch => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'key' + (extraClass ? ' ' + extraClass : '');
-      btn.textContent = ch === '्' ? '्' : ch;
-      btn.addEventListener('mousedown', e => e.preventDefault()); // don't lose input focus
-      btn.addEventListener('click', () => insertAtCursor(ch));
-      row.appendChild(btn);
-    });
-    kbd.appendChild(row);
-  }
-  section('व्यंजन', CONSONANTS);
-  section('मात्रा', MATRAS, 'matra');
-  section('स्वर', VOWELS);
-  const controls = document.createElement('div');
-  controls.className = 'kbd-row';
-  controls.style.marginTop = '8px';
-  MARKS.forEach(m => {
+  const row = document.createElement('div');
+  row.className = 'kbd-row';
+  CONSONANTS.forEach(c => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'key';
-    btn.textContent = m === '्' ? '् (हलंत)' : m;
-    if (m === '्') btn.style.minWidth = '0';
+    btn.textContent = c;
     btn.addEventListener('mousedown', e => e.preventDefault());
-    btn.addEventListener('click', () => insertAtCursor(m));
-    controls.appendChild(btn);
+    btn.addEventListener('click', () => insertNextAkshar(c));
+    row.appendChild(btn);
   });
-  const bksp = document.createElement('button');
-  bksp.type = 'button';
-  bksp.className = 'key control';
-  bksp.textContent = '⌫ मिटाएँ';
-  bksp.addEventListener('mousedown', e => e.preventDefault());
-  bksp.addEventListener('click', backspaceAtCursor);
-  controls.appendChild(bksp);
-  const clr = document.createElement('button');
-  clr.type = 'button';
-  clr.className = 'key control';
-  clr.textContent = 'साफ़';
-  clr.addEventListener('mousedown', e => e.preventDefault());
-  clr.addEventListener('click', () => { wordInput.value = ''; wordInput.focus(); });
-  controls.appendChild(clr);
-  kbd.appendChild(controls);
+  kbd.appendChild(row);
 }
 
 renderPuzzle();
