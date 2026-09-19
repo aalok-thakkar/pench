@@ -32,12 +32,9 @@ body {
   padding-inline: 20px;
   font-variant-numeric: lining-nums;
 }
-.wrap { max-width: 640px; margin: 0 auto; }
+.wrap { max-width: 680px; margin: 0 auto; }
 
-.header {
-  text-align: center;
-  margin-bottom: 40px;
-}
+.header { text-align: center; margin-bottom: 28px; }
 .title {
   font-weight: 500;
   font-size: clamp(3rem, 8vw, 4rem);
@@ -54,6 +51,52 @@ body {
   color: var(--ink-dim);
 }
 
+.instructions {
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  margin-bottom: 22px;
+  font-size: 0.95rem;
+}
+.instructions summary {
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--navy);
+  font-weight: 500;
+  list-style: none;
+  padding: 4px 0;
+}
+.instructions summary::-webkit-details-marker { display: none; }
+.instructions summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--navy);
+}
+.instructions[open] summary::before { content: "▾"; }
+.instructions-body { margin-top: 12px; color: var(--ink); }
+.instructions-body p { margin: 0 0 10px; }
+.instructions-body p:last-child { margin-bottom: 0; }
+.instructions-body .ex-boxes {
+  display: inline-flex;
+  gap: 6px;
+  vertical-align: middle;
+  margin: 0 6px;
+}
+.instructions-body .ex-boxes .box {
+  width: 28px;
+  height: 34px;
+  border: 1.5px solid var(--navy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--navy);
+  border-radius: 3px;
+}
+
 .card {
   border: 1px solid var(--rule);
   padding: 32px 28px;
@@ -61,7 +104,7 @@ body {
 .puzzle-tag {
   font-family: var(--sans);
   font-size: 0.72rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--navy);
   text-align: center;
@@ -69,32 +112,36 @@ body {
 }
 .count-line {
   text-align: center;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: var(--ink-dim);
-  margin-bottom: 14px;
-}
-.pattern-line {
-  text-align: center;
-  font-size: clamp(2rem, 6vw, 2.6rem);
-  font-weight: 500;
-  color: var(--navy);
-  letter-spacing: 0.08em;
-  margin-bottom: 6px;
-  line-height: 1.1;
-}
-.pattern-hint {
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--ink-dim);
-  margin-bottom: 30px;
+  margin-bottom: 22px;
   font-family: var(--sans);
   letter-spacing: 0.08em;
 }
-.pattern-hint .m {
+.count-line .count-word { font-family: var(--deva); color: var(--ink); font-size: 1.15rem; }
+
+.pattern-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.pattern-box {
+  width: 66px;
+  height: 84px;
+  border: 2px solid var(--navy);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: var(--navy);
+  font-weight: 500;
+  background: var(--white);
   font-family: var(--deva);
-  color: var(--ink);
-  font-size: 1.05rem;
-  margin: 0 4px;
+  line-height: 1;
+  padding-top: 6px;
 }
 
 .input-row {
@@ -134,13 +181,10 @@ body {
   color: var(--ink-dim);
   margin-bottom: 24px;
 }
-.feedback .devanagari { font-family: var(--deva); font-size: 1.1rem; }
 .feedback.good { color: var(--good); }
 .feedback.bad { color: var(--bad); }
 
-.found {
-  margin-top: 8px;
-}
+.found { margin-top: 8px; }
 .found-head {
   font-family: var(--sans);
   font-size: 0.72rem;
@@ -152,11 +196,7 @@ body {
   justify-content: space-between;
   align-items: baseline;
 }
-.found-head b {
-  color: var(--navy);
-  font-weight: 500;
-  font-family: var(--sans);
-}
+.found-head b { color: var(--navy); font-weight: 500; font-family: var(--sans); }
 .word-list {
   display: flex;
   flex-wrap: wrap;
@@ -241,6 +281,51 @@ body {
   color: var(--ink);
 }
 
+/* On-screen Devanagari keyboard */
+.keyboard {
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+.kbd-label {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 8px 0 6px;
+}
+.kbd-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.key {
+  min-width: 34px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--deva);
+  font-size: 1.15rem;
+  cursor: pointer;
+  color: var(--ink);
+  line-height: 1;
+  border-radius: 3px;
+  transition: none;
+}
+.key:hover { border-color: var(--navy); background: var(--navy-soft); }
+.key:active { background: var(--navy); color: var(--white); }
+.key.matra { background: var(--navy-soft); color: var(--navy); font-weight: 500; }
+.key.matra:hover { background: var(--navy); color: var(--white); }
+.key.control {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  min-width: 0;
+}
+
 .footer {
   margin-top: 32px;
   text-align: center;
@@ -250,12 +335,12 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.footer a { color: inherit; }
 
 @media (max-width: 480px) {
   .card { padding: 24px 18px; }
   .input-row { flex-direction: column; }
   .input-row button { padding: 12px; }
+  .pattern-box { width: 56px; height: 72px; font-size: 2rem; }
 }
 </style>
 </head>
@@ -266,16 +351,28 @@ body {
     <div class="tagline">Hindi word game</div>
   </div>
 
+  <details class="instructions">
+    <summary>कैसे खेलें</summary>
+    <div class="instructions-body">
+      <p>पेंच में आपको एक <strong>ढांचा</strong> दिखाया जाता है: शब्द में कितने अक्षर हैं, और हर अक्षर पर कौन-सी मात्रा है। आपको उस ढांचे में फिट बैठने वाले हिंदी शब्द खोजने हैं।</p>
+      <p>हर बॉक्स एक अक्षर का प्रतिनिधित्व करता है। बॉक्स के अंदर दी गई मात्रा उस अक्षर पर लगेगी। "अ" वाले बॉक्स का मतलब है कोई अलग मात्रा नहीं, अर्थात इनहरेंट अ (जैसे "क", "म")।</p>
+      <p>उदाहरण: दो अक्षर, पैटर्न <span class="ex-boxes"><span class="box">ि</span><span class="box">ी</span></span> — इसमें "मिली", "गिरी", "खिली", "पिली" जैसे शब्द आते हैं।</p>
+      <p>एक-एक करके शब्द टाइप कीजिए। "समाप्त" दबाकर स्कोर और छूटे हुए शब्द देखिए।</p>
+    </div>
+  </details>
+
   <div class="card">
     <div class="puzzle-tag" id="puzzleTag">आज का पेंच</div>
     <div class="count-line" id="countLine"></div>
-    <div class="pattern-line" id="patternLine"></div>
-    <div class="pattern-hint" id="patternHint"></div>
+    <div class="pattern-boxes" id="patternBoxes"></div>
 
     <div class="input-row">
       <input type="text" id="wordInput" placeholder="शब्द टाइप कीजिए" autocomplete="off" autocapitalize="off" spellcheck="false" lang="hi">
       <button id="submitBtn" type="button">जमा करें</button>
     </div>
+
+    <div class="keyboard" id="keyboard"></div>
+
     <div class="feedback" id="feedback"></div>
 
     <div class="found">
@@ -294,7 +391,7 @@ body {
     <div class="summary" id="summary" hidden></div>
   </div>
 
-  <div class="footer">एक शब्द खोज खेल · देवनागरी</div>
+  <div class="footer">देवनागरी शब्द खोज खेल</div>
 </div>
 
 <script>
@@ -330,9 +427,7 @@ function parseAkshars(word) {
   while (i < word.length) {
     const ch = word[i];
     if (!isConsonant(ch) && !isIndependentVowel(ch)) { i++; continue; }
-
     const akshar = { consonants: [], vowel: 'अ', nasalization: null, visarga: false };
-
     if (isIndependentVowel(ch)) {
       akshar.vowel = INDEPENDENT_VOWELS[ch];
       i++;
@@ -357,83 +452,245 @@ function parseAkshars(word) {
     if (word[i] === ANUSVARA) { akshar.nasalization = 'anusvara'; i++; }
     else if (word[i] === CHANDRABINDU) { akshar.nasalization = 'chandrabindu'; i++; }
     if (word[i] === VISARGA) { akshar.visarga = true; i++; }
-
     akshars.push(akshar);
   }
   return akshars;
 }
 
-// --- Wordlist ----------------------------------------------------------------
+// --- Wordlist ---------------------------------------------------------------
 const WORDS = [
-  // 2 अक्षर
-  "कर", "चल", "कल", "बल", "मन", "धन", "वन", "फल", "दल", "हल",
-  "नर", "घर", "मत", "जल", "गम", "पल", "कब", "जब", "अब", "तब",
-  "कला", "गया", "दया", "जया",
-  "गली", "कली", "बली", "चली", "हरी", "परी", "नई",
-  "नाम", "काम", "गाल", "बाल", "दाल", "बाग", "राज", "ताज",
-  "बात", "हाथ", "साथ", "पाठ", "ताप", "बाज", "आम",
-  "राजा", "बाबा", "दादा", "माता", "नाना", "काका", "चाचा", "ताला", "माला", "बाला", "आजा",
-  "नानी", "पानी", "रानी", "दादी", "काकी", "चाची", "हाथी", "माली", "नाई", "दाई", "आदी",
-  "आलू", "बाबू", "चालू", "राजू",
-  "जाओ", "गाओ", "खाओ",
-  "दिल", "मिल", "हिल", "फिर", "सिर", "गिन", "मित", "बिन", "तिल",
-  "पिता", "हिना", "दिया", "हिला", "मिला", "किया", "जिया", "छिपा",
-  "मिली", "खिली", "गिरी", "फिरी", "बिकी", "लिखी", "सिली", "हिली", "पिली",
-  "लिए", "दिए", "पिए",
-  "कील", "नील", "खीर", "तीर", "वीर", "हीर", "पीर", "धीर", "जीत",
-  "बीना", "पीना", "सीना", "चीना", "जीना", "तीना",
-  "सीधी", "नीली", "पीली", "सीली",
-  "चुप", "सुख", "दुख", "सुर", "मुख",
-  "सुना", "चुना", "खुला", "धुला", "गुना", "बुरा", "जुड़ा", "फुला", "जुला", "पुरा",
-  "बुनी", "चुनी", "सुनी", "गुड़ी", "कुड़ी", "बुड़ी", "पुरी", "जुड़ी",
-  "दूर", "नूर", "फूल", "मूल", "शूल",
-  "पूरा", "दूजा", "बूरा", "पूजा",
-  "पूरी", "चूरी", "बूढ़ी", "पूजी",
-  "बेल", "तेल", "मेल", "नेक", "देश", "केश",
-  "बेला", "केला", "मेला", "ठेला", "चेला",
-  "बेटी", "नेकी", "चेली", "तेली", "देखी", "बेची",
-  "बोल", "तोल", "गोल", "मोल", "खोल", "चोर", "जोर", "मोर", "शोर", "ओर",
-  "दोना", "कोना", "बोना", "टोना", "धोना", "रोना", "सोना", "होना", "खोना",
-  "रोटी", "चोटी", "मोती", "धोती", "सोती", "पोती", "बोली", "होली", "गोली", "गोदी",
-  "पैर", "गैर", "तैर", "बैर", "जैसे", "कैसे",
-  "मैया", "कैसा", "पैसा", "बैरा",
-  "कौन", "गौर", "बौर", "मौत", "नौका",
-  // 3 अक्षर
-  "चलन", "गमन", "मरण", "सदन", "नमन", "पवन", "वचन", "नयन", "जनक",
-  "कमल", "कलम", "गरम", "नरम", "बरस", "सरल", "सफर", "कदर",
-  "सलाम", "कमाल", "हलाल", "धमाल", "पहाड़", "हवाल", "कसाब",
-  "कहानी", "गहरी", "पहेली", "जबानी", "नहानी",
-  "नायक", "मानव", "दानव", "पावन", "कागज", "वादक", "पाठक",
-  "निकल", "बिखर", "मिलन", "पिघल", "बिजली",
-  "किताबी", "बिकाऊ", "मिटानी",
-  "चुनरी", "बुनकर", "मुरझा", "सुनहरी",
-  "केसर", "बेसन", "बेकार", "देवता",
-  "गोदाम", "बोतल", "मोहन", "सोहन",
-  "अनार", "उधार", "उजाला", "उगाना", "अकेला",
-  "बादल", "पागल", "सागर", "गागर", "आधार",
-  "जीवन", "मीनार", "गीदड़", "चीखना"
+  // 2 akshar — [अ, अ]
+  "कर","चल","कल","बल","मन","धन","वन","फल","दल","हल",
+  "नर","घर","मत","जल","गम","पल","कब","जब","अब","तब",
+  "सर","तर","गर","पर","हर","वर","रस","कस","तल","बम",
+  "पग","तप","नम","कम","सह","कह","बह","रह","बज","सज",
+  "रख","हट","पट","यह","जग","मग","तक","सब","बस","यश",
+  "तन","दम","नस","हस","फर","रज","लत",
+  // 2 akshar — [अ, आ]
+  "कला","गया","दया","जया","जरा","कहा","रहा","सहा","बहा","पड़ा",
+  "चढ़ा","बना","बजा","सजा","मरा","हसा","टला","पला","जला","तला",
+  "करा","धरा","भरा","खरा","हरा","गया","लगा","रचा","सजा",
+  // 2 akshar — [अ, ई]
+  "गली","कली","बली","चली","हरी","परी","नई","बजी","सजी","पड़ी",
+  "चढ़ी","बनी","टली","पली","जली","मरी","जगी","थकी","हसी","भरी",
+  "जनी","सनी","रची","बची",
+  // 2 akshar — [अ, ए]
+  "नए","गए","बजे","सजे","चले","कहे","जगे","टले","पले","जले",
+  "मरे","थके","लगे","बरे","हरे","रहे","बचे","रचे","पके",
+  // 2 akshar — [अ, ओ]
+  "चलो","करो","कहो","बहो","पढ़ो","रखो","सजो","बजो","रहो","मरो",
+  // 2 akshar — [आ, अ]
+  "नाम","काम","गाल","बाल","दाल","बाग","राज","ताज","बात","हाथ",
+  "साथ","पाठ","ताप","बाज","आम","आग","आन","नाग","चाप","दाम",
+  "राम","शाम","जान","पान","कान","मान","दान","गान","तार","यार",
+  "चार","सार","पार","ठाठ","आस","पास","वास","बार","दार","कार",
+  "मार","धार","वार","हार","आर","चाय","लाभ","राख","साख","दाग",
+  "जाग","भाग","आप","आह",
+  // 2 akshar — [आ, आ]
+  "राजा","बाबा","दादा","माता","नाना","काका","चाचा","ताला","माला","बाला",
+  "आजा","बाजा","आना","आया","आधा","भाषा","आशा","छाया","नाला","हारा",
+  "मारा","बारा","आगा","राखा","बाजा","चारा","सारा","पारा","धारा",
+  // 2 akshar — [आ, इ]
+  "आदि","आगि",
+  // 2 akshar — [आ, ई]
+  "नानी","पानी","रानी","दादी","काकी","चाची","हाथी","माली","नाई","दाई",
+  "आदी","चाकी","बाकी","राखी","गाड़ी","साड़ी","चाबी","आधी","हारी","थाली",
+  "नाली","गाली","ताली","नाड़ी","वादी","बादी","आझी","राजी","खादी","चाची",
+  "बाड़ी","राशी",
+  // 2 akshar — [आ, ऊ]
+  "आलू","बाबू","चालू","राजू","कालू","बालू","नाऊ","चाऊ",
+  // 2 akshar — [आ, ए]
+  "चारे","यारे","मारे","नाते","सारे","नाले","हारे","दाने","माने","आगे",
+  "आके","आजे","राजे","बागे","पाके",
+  // 2 akshar — [आ, ओ]
+  "जाओ","गाओ","खाओ","पाओ","आओ","आयो","राओ",
+  // 2 akshar — [इ, अ]
+  "दिल","मिल","हिल","फिर","सिर","गिन","बिन","तिल","दिन","गिर",
+  "नित","सिख","चिन","बिच","किन","पिस","निर","बिख",
+  // 2 akshar — [इ, आ]
+  "पिता","हिना","दिया","हिला","मिला","किया","जिया","छिपा","पिया","बिना",
+  "निशा","निदा","दिखा","बिका","सिया","लिया","हिना","पिला","सिला","गिना",
+  // 2 akshar — [इ, ई]
+  "मिली","खिली","गिरी","फिरी","बिकी","लिखी","सिली","हिली","पिली","दिली",
+  "मिटी","चिड़ी","निकी","भिड़ी","पिटी",
+  // 2 akshar — [इ, ए]
+  "लिए","दिए","पिए","गिने","मिले","खिले","गिरे","सिखे",
+  // 2 akshar — [ई, अ]
+  "कील","नील","खीर","तीर","वीर","हीर","पीर","धीर","जीत","चीज",
+  "बीज","पीठ","मीन","दीन","नीम","गीत","नीच","बीच","तीन","चीन",
+  "भीत","लीक","चीख","सीख","धीर",
+  // 2 akshar — [ई, आ]
+  "बीना","पीना","सीना","चीना","जीना","तीना","मीना","हीरा","जीरा","खीरा",
+  "चीरा","बीरा","फीका","धीरा","लीला","लीना",
+  // 2 akshar — [ई, ई]
+  "सीधी","नीली","पीली","सीली","जीती","बीती","धीरी","लीची","चीखी",
+  // 2 akshar — [ई, ए]
+  "पीए","जीए","बीए","धीरे","बीते","जीते",
+  // 2 akshar — [उ, अ]
+  "चुप","सुख","दुख","सुर","मुख","तुम","चुन","सुन","बुन","गुम",
+  "धुन","बुध","गुण","कुल","पुल","दुध","युग","युर",
+  // 2 akshar — [उ, आ]
+  "सुना","चुना","खुला","धुला","गुना","बुरा","जुड़ा","फुला","चुरा","मुड़ा",
+  "पुरा","दुआ","जुदा","बुझा","गुफा","सुरा","गुला","मुला","चुका","सुखा",
+  // 2 akshar — [उ, ई]
+  "बुनी","चुनी","सुनी","गुड़ी","कुड़ी","बुड़ी","पुरी","जुड़ी","खुशी","बुरी",
+  "सुखी","दुखी","गुनी","चुनी","पुनी","धुनी","मुरी","लुटी",
+  // 2 akshar — [उ, ए]
+  "बुने","चुने","सुने","जुड़े","मुड़े","पुरे","बुझे","चुके",
+  // 2 akshar — [ऊ, अ]
+  "दूर","नूर","फूल","मूल","शूल","धूप","सूप","नून","हूर","तूर",
+  "मूर","पूल","झूल","चूर",
+  // 2 akshar — [ऊ, आ]
+  "पूरा","दूजा","बूरा","पूजा","जूड़ा","चूड़ा","बूढ़ा","सूखा","भूखा","रूढ़ा",
+  // 2 akshar — [ऊ, ई]
+  "पूरी","चूरी","बूढ़ी","पूजी","दूरी","भूरी","सूखी","भूखी","चूड़ी","खूबी",
+  "जूठी","लूटी",
+  // 2 akshar — [ऊ, ए]
+  "पूरे","दूजे","कूड़े","बूढ़े","सूखे","भूखे",
+  // 2 akshar — [ए, अ]
+  "बेल","तेल","मेल","नेक","देश","केश","पेट","वेद","चेत","बेच",
+  "तेज","खेत","सेठ","पेड़","केर","बेर","सेब","भेद","रेत",
+  // 2 akshar — [ए, आ]
+  "बेला","केला","मेला","ठेला","चेला","देना","लेना","सेना","वेला","रेता",
+  "जेला","पेरा","खेला","हेरा","देना","लेखा","लेगा",
+  // 2 akshar — [ए, ई]
+  "बेटी","नेकी","चेली","तेली","देखी","बेची","रेती","भेजी","खेती","बेली",
+  "सेठी","पेटी","सेवी",
+  // 2 akshar — [ए, ए]
+  "देखे","बेचे","खेते","सेवे",
+  // 2 akshar — [ओ, अ]
+  "बोल","तोल","गोल","मोल","खोल","चोर","जोर","मोर","शोर","ओर",
+  "कोर","फोर","ठोर","दोष","कोश","पोस","नोट","वोट","रोक","टोक",
+  "बोध","शोक","ओठ","ओस","भोज","लोक","लोग","होश","रोग","खोज",
+  "पोत","सोच",
+  // 2 akshar — [ओ, आ]
+  "दोना","कोना","बोना","टोना","धोना","रोना","सोना","होना","खोना","जोड़ा",
+  "मोड़ा","छोड़ा","तोड़ा","ओला","भोला","चोरा","खोदा","रोका","बोझा","बोहा",
+  // 2 akshar — [ओ, ई]
+  "रोटी","चोटी","मोती","धोती","सोती","पोती","बोली","होली","गोली","गोदी",
+  "कोठी","मोटी","ढोली","टोली","जोड़ी","चोरी","मोरी","सोची","खोई","रोई",
+  "भोली","चोखी",
+  // 2 akshar — [ओ, ए]
+  "बोले","खोले","तोले","गोले","रोए","सोए","खोए","होते","सोते",
+  // 2 akshar — [ऐ, अ]
+  "पैर","गैर","तैर","बैर","नैन","सैर","बैठ","फैल","हैस","चैत",
+  // 2 akshar — [ऐ, आ]
+  "मैया","कैसा","पैसा","बैरा","दैया","सैया","जैसा","पैदा","चैला","बैला",
+  // 2 akshar — [ऐ, ई]
+  "पैनी","चैनी","बैनी","मैनी","सैनी","चैती",
+  // 2 akshar — [औ, अ]
+  "कौन","गौर","बौर","मौत","और","सौर","फौज","दौड़","गौद","शौक","लौट",
+  // 2 akshar — [औ, आ]
+  "कौआ","नौका","दौरा","चौड़ा","मौका",
+
+  // Independent-vowel starts
+  "अरे","अहा","अगर","अमर","अकल","अनार","अकेला",
+  "एक","ऐसा","ऐसी","औरत",
+  "इसी","इति",
+  "उठ","उधर","उधार","उजाला","उठाना","उतरा",
+
+  // 3 akshar — [अ, अ, अ]
+  "चलन","गमन","मरण","सदन","नमन","पवन","वचन","नयन","जनक","नगर",
+  "अगर","अमर","अकल","कमर","कदम","बदन","वतन","चमन","सफर","कहर",
+  "बहर","बहन","सहज","नरम","कमल","कलम","गरम","बरस","सरल","हसन",
+  "जगत","चरण","शहर","सजग","बरगद","हवन",
+  // 3 akshar — [अ, अ, ई]
+  "चलनी","बकरी","बहरी","नकली","पगली","रजनी","कहानी (nope 3? क+हा+नी = [अ,आ,ई])",
+  "चटनी","चरणी","बजरी","गजरी","सजनी",
+  // 3 akshar — [अ, अ, आ]
+  "बदला","समझा","गमला","सजना","कहला","बरसा","चलना","करना","पहना",
+  "पकड़ा",
+  // 3 akshar — [अ, अ, ए]
+  "बदले","समझे","गमले","बरसे","चलने","करते",
+  // 3 akshar — [अ, आ, अ]
+  "सलाम","कमाल","हलाल","धमाल","हवाल","जवाब","सवाल","सवार","कमान","बयान",
+  "समान","कहार","नमाज़","पहाड़","बदाम","पकाब (nope)","हवास","सजाव","बचाव","नहान",
+  "मकान","सलाह","गुलाब (nope [उ,आ,अ])",
+  // 3 akshar — [अ, आ, ई]
+  "कहानी","जबानी","नहानी","पहाड़ी","कमाई","बचाई","सजाई","पकाई","बनाई","सफाई",
+  "मलाई","धुनाई (nope [उ,आ,ई])","लगाई","बजाई","रजाई",
+  // 3 akshar — [अ, आ, ए]
+  "कहाने","नहाने","कमाने","सजाने","पकाने","बनाने",
+  // 3 akshar — [अ, ए, ई]
+  "पहेली","सहेली","पहेली",
+  // 3 akshar — [इ, अ, अ]
+  "निकल","बिखर","मिलन","पिघल","निकर","बिजल",
+  // 3 akshar — [इ, अ, ई]
+  "बिजली","तितली","निकली","चिकनी","फिसली","हिरनी",
+  // 3 akshar — [इ, अ, आ]
+  "निकला","बिखरा","बिचला","पिटा","पिसा",
+  // 3 akshar — [इ, आ, ई]
+  "किताबी","दिवाली","मिठाई","निशानी","पिटाई","किनारी","सिपाही","निकासी",
+  // 3 akshar — [इ, आ, आ]
+  "मिटाना","पिलाना","दिलाना","सिखाना","किनारा","पिघला","बिछाना",
+  // 3 akshar — [उ, अ, अ]
+  "सुखद","बुतल (nope)","कुमन (nope)",
+  // 3 akshar — [उ, अ, ई]
+  "चुनरी","मुरगी","सुरमई",
+  // 3 akshar — [उ, आ, ई]
+  "सुहानी","बुलाई","चुनाई","पुरानी","बुझाई",
+  // 3 akshar — [उ, आ, आ]
+  "सुलाना","बुलाना","चुराना","बुझाना","पुराना","सुहाना",
+  // 3 akshar — [ऊ, अ, अ]
+  "दूसरा (nope [ऊ,अ,आ])",
+  // 3 akshar — [ऊ, अ, आ]
+  "दूसरा",
+  // 3 akshar — [आ, अ, अ]
+  "नायक","मानव","दानव","पावन","कागज","वादक","पाठक","राजन","कारण","बालक",
+  "गायक","नाटक","धावक","साहस","आदमी (nope [आ,अ,ई])","भावन","मानस","सारस","कारक",
+  // 3 akshar — [आ, अ, ई]
+  "आदमी","चादरी","आजमी","रात्रि (nope conjunct)",
+  // 3 akshar — [आ, इ, अ]
+  "कातिल","मालिक","साजिश","हाजिर","नाजिर","खातिर",
+  // 3 akshar — [ए, अ, अ]
+  "केसर","बेसन","जेवर","केदर","मेहमान (with anusvara, skip)",
+  // 3 akshar — [ओ, अ, अ]
+  "बोतल","मोहन","सोहन","रोशन",
+  // 3 akshar — [ओ, अ, आ]
+  "टोकरा","मोहरा","बोझला",
+  // 3 akshar — [ओ, आ, अ]
+  "गोदाम","सोहबत (nope)","बोहतर (nope)",
+  // 3 akshar — [औ, अ, अ]
+  "औरत","औकात (nope [औ,आ,अ])",
+  // 3 akshar — [औ, आ, अ]
+  "औकात",
+  // 3 akshar — [अ, आ, ओ]
+  "कमाओ","बचाओ","बजाओ","पकाओ",
+  // 3 akshar — [उ, आ, ओ]
+  "सुनाओ","बुलाओ","चुराओ",
+  // 3 akshar — [इ, आ, ओ]
+  "मिटाओ","पिलाओ","खिलाओ",
+  // 3 akshar — [आ, अ, आ]
+  "आगरा","सामना","हारना","मारना","खाना (2 akshar actually? खा+ना = [आ,आ])",
+  // 3 akshar — [उ, अ, आ]
+  "उधर","सुबह (with special)","बुरका (nope)",
+
+  // 4 akshar — some
+  "किताबें (with anusvara)","बदमाश (3 akshar [अ,अ,आ]?)","इमारत"
 ];
 
 // Parse all words
-const wordDb = WORDS.map(w => {
-  const nw = w.normalize('NFC');
-  const akshars = parseAkshars(nw);
-  const pattern = akshars.map(a => a.vowel).filter(v => v !== null);
-  return { word: nw, akshars, pattern, aksharCount: akshars.length };
-});
+const wordDb = WORDS
+  .map(w => (w || '').normalize('NFC').trim())
+  .filter(w => w.length > 0)
+  .map(w => {
+    const akshars = parseAkshars(w);
+    const pattern = akshars.map(a => a.vowel).filter(v => v !== null);
+    return { word: w, akshars, pattern, aksharCount: akshars.length };
+  })
+  .filter(e => e.aksharCount > 0);
+
+// Deduplicate
+const seenWords = new Set();
+const uniqueDb = [];
+wordDb.forEach(e => { if (!seenWords.has(e.word)) { seenWords.add(e.word); uniqueDb.push(e); } });
 
 // Index by (count, pattern)
 const patternIndex = new Map();
-wordDb.forEach(entry => {
-  if (entry.aksharCount === 0) return;
+uniqueDb.forEach(entry => {
   const key = entry.aksharCount + ':' + entry.pattern.join(',');
   if (!patternIndex.has(key)) patternIndex.set(key, []);
   patternIndex.get(key).push(entry.word);
-});
-
-// Deduplicate word lists (defensive)
-patternIndex.forEach((list, key) => {
-  patternIndex.set(key, Array.from(new Set(list)));
 });
 
 // --- Puzzle selection --------------------------------------------------------
@@ -448,17 +705,11 @@ function hashString(s) {
 
 function selectPuzzle(dateStr) {
   const candidates = Array.from(patternIndex.entries())
-    .filter(([k, v]) => v.length >= 4 && v.length <= 15);
-  if (!candidates.length) {
-    // Fallback: any pattern
-    const all = Array.from(patternIndex.entries()).filter(([k, v]) => v.length >= 1);
-    const [key, words] = all[hashString(dateStr) % all.length];
-    const [c, p] = key.split(':');
-    return { aksharCount: +c, pattern: p.split(','), answers: words, dateStr };
-  }
-  const [key, words] = candidates[hashString(dateStr) % candidates.length];
+    .filter(([, v]) => v.length >= 5 && v.length <= 20);
+  const pool = candidates.length ? candidates : Array.from(patternIndex.entries()).filter(([, v]) => v.length >= 3);
+  const [key, words] = pool[hashString(dateStr) % pool.length];
   const [c, p] = key.split(':');
-  return { aksharCount: +c, pattern: p.split(','), answers: words, dateStr };
+  return { aksharCount: +c, pattern: p.split(','), answers: words.slice(), dateStr };
 }
 
 function todayString() {
@@ -473,34 +724,33 @@ function todayString() {
 const HINDI_COUNTS = ['', 'एक', 'दो', 'तीन', 'चार', 'पाँच', 'छह', 'सात', 'आठ', 'नौ', 'दस'];
 
 const VOWEL_TO_MATRA = {
-  'अ': '', 'आ': 'ा', 'इ': 'ि', 'ई': 'ी', 'उ': 'ु', 'ऊ': 'ू',
-  'ऋ': 'ृ', 'ए': 'े', 'ऐ': 'ै', 'ओ': 'ो', 'औ': 'ौ'
+  'अ': '', 'आ': 'ा', 'इ': 'ि', 'ई': 'ी',
+  'उ': 'ु', 'ऊ': 'ू', 'ऋ': 'ृ',
+  'ए': 'े', 'ऐ': 'ै', 'ओ': 'ो', 'औ': 'ौ'
 };
 
-function exampleAkshar(v) {
-  if (v === 'अ') return 'क';
-  return 'क' + VOWEL_TO_MATRA[v];
+function patternBoxContent(v) {
+  if (v === 'अ') return 'अ';
+  // Use dotted circle placeholder + mātrā so it renders in every font
+  return '◌' + VOWEL_TO_MATRA[v];
 }
 
 // --- Puzzle state ------------------------------------------------------------
 const dateStr = todayString();
 const puzzle = selectPuzzle(dateStr);
 const puzzleKey = 'pench-progress-' + dateStr;
-
 const savedState = (() => {
   try { return JSON.parse(localStorage.getItem(puzzleKey) || 'null'); }
   catch { return null; }
 })();
 const foundWords = new Set(savedState && savedState.found ? savedState.found : []);
 let finished = savedState && savedState.finished || false;
-let hintUsed = savedState && savedState.hintUsed || false;
 
 function saveState() {
   try {
     localStorage.setItem(puzzleKey, JSON.stringify({
       found: Array.from(foundWords),
-      finished,
-      hintUsed
+      finished
     }));
   } catch {}
 }
@@ -509,8 +759,7 @@ function saveState() {
 const $ = id => document.getElementById(id);
 const puzzleTag = $('puzzleTag');
 const countLine = $('countLine');
-const patternLine = $('patternLine');
-const patternHint = $('patternHint');
+const patternBoxes = $('patternBoxes');
 const wordInput = $('wordInput');
 const submitBtn = $('submitBtn');
 const feedback = $('feedback');
@@ -523,13 +772,15 @@ const summary = $('summary');
 // --- Render ------------------------------------------------------------------
 function renderPuzzle() {
   puzzleTag.textContent = 'आज का पेंच · ' + puzzle.dateStr;
-  countLine.textContent = HINDI_COUNTS[puzzle.aksharCount] + ' अक्षर';
-  patternLine.textContent = puzzle.pattern.map(exampleAkshar).join(' — ');
-  const matras = puzzle.pattern.map(v => {
-    const m = VOWEL_TO_MATRA[v];
-    return m ? '<span class="m">' + m + '</span>' : '<span class="m">·</span>';
+  const word = HINDI_COUNTS[puzzle.aksharCount] || String(puzzle.aksharCount);
+  countLine.innerHTML = '<span class="count-word">' + word + '</span> अक्षर';
+  patternBoxes.innerHTML = '';
+  puzzle.pattern.forEach(v => {
+    const box = document.createElement('div');
+    box.className = 'pattern-box';
+    box.textContent = patternBoxContent(v);
+    patternBoxes.appendChild(box);
   });
-  patternHint.innerHTML = 'मात्रा: ' + matras.join(' — ');
 }
 
 function renderFound() {
@@ -576,21 +827,13 @@ function submitWord() {
     parsedPattern.length === puzzle.pattern.length &&
     parsedPattern.every((v, i) => v === puzzle.pattern[i]);
 
-  if (patternMatches) {
-    setFeedback('✗ यह शब्द शब्दकोश में नहीं है।', 'bad');
-  } else if (parsed.length !== puzzle.aksharCount) {
-    setFeedback('✗ अक्षर की संख्या मेल नहीं खाती।', 'bad');
-  } else {
-    setFeedback('✗ मात्रा का पैटर्न मेल नहीं खाता।', 'bad');
-  }
+  if (patternMatches) setFeedback('✗ यह शब्द शब्दकोश में नहीं है।', 'bad');
+  else if (parsed.length !== puzzle.aksharCount) setFeedback('✗ अक्षर की संख्या मेल नहीं खाती।', 'bad');
+  else setFeedback('✗ मात्रा का पैटर्न मेल नहीं खाता।', 'bad');
   wordInput.value = '';
 }
 
-function showHint() {
-  hintUsed = true;
-  saveState();
-  setFeedback('कुल ' + puzzle.answers.length + ' शब्द हैं।');
-}
+function showHint() { setFeedback('कुल ' + puzzle.answers.length + ' शब्द हैं।'); }
 
 function finishPuzzle() {
   finished = true;
@@ -635,11 +878,8 @@ function finishPuzzle() {
   shareBtn.addEventListener('click', () => {
     const url = location.href.split('#')[0];
     const text = shareText + '\n' + url;
-    if (navigator.share) {
-      navigator.share({ title: 'पेंच', text }).catch(() => copyText(text));
-    } else {
-      copyText(text);
-    }
+    if (navigator.share) navigator.share({ title: 'पेंच', text }).catch(() => copyText(text));
+    else copyText(text);
   });
   shareLine.appendChild(shareBtn);
   summary.appendChild(shareLine);
@@ -651,12 +891,8 @@ function finishPuzzle() {
 }
 
 function copyText(t) {
-  try {
-    navigator.clipboard.writeText(t);
-    setFeedback('कॉपी हो गया।');
-  } catch {
-    setFeedback('कॉपी नहीं हुआ।');
-  }
+  try { navigator.clipboard.writeText(t); setFeedback('कॉपी हो गया।'); }
+  catch { setFeedback('कॉपी नहीं हुआ।'); }
 }
 
 submitBtn.addEventListener('click', submitWord);
@@ -664,8 +900,101 @@ wordInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventD
 hintBtn.addEventListener('click', showHint);
 finishBtn.addEventListener('click', finishPuzzle);
 
+// --- On-screen Devanagari keyboard ------------------------------------------
+const CONSONANTS = [
+  'क','ख','ग','घ','च','छ','ज','झ',
+  'ट','ठ','ड','ढ','ण','त','थ','द','ध','न',
+  'प','फ','ब','भ','म','य','र','ल','व',
+  'श','ष','स','ह',
+  'ज़','ड़','ढ़','फ़'
+];
+const MATRAS = ['ा','ि','ी','ु','ू','े','ै','ो','ौ'];
+const VOWELS = ['अ','आ','इ','ई','उ','ऊ','ए','ऐ','ओ','औ'];
+const MARKS = ['ं','ँ','ः','्']; // anusvara, chandrabindu, visarga, halant
+
+function insertAtCursor(ch) {
+  const el = wordInput;
+  const start = typeof el.selectionStart === 'number' ? el.selectionStart : el.value.length;
+  const end = typeof el.selectionEnd === 'number' ? el.selectionEnd : el.value.length;
+  el.value = el.value.slice(0, start) + ch + el.value.slice(end);
+  const pos = start + ch.length;
+  el.focus();
+  try { el.setSelectionRange(pos, pos); } catch (e) {}
+}
+
+function backspaceAtCursor() {
+  const el = wordInput;
+  const start = typeof el.selectionStart === 'number' ? el.selectionStart : el.value.length;
+  const end = typeof el.selectionEnd === 'number' ? el.selectionEnd : el.value.length;
+  if (start !== end) {
+    el.value = el.value.slice(0, start) + el.value.slice(end);
+    el.focus();
+    try { el.setSelectionRange(start, start); } catch (e) {}
+    return;
+  }
+  if (start === 0) return;
+  el.value = el.value.slice(0, start - 1) + el.value.slice(start);
+  el.focus();
+  try { el.setSelectionRange(start - 1, start - 1); } catch (e) {}
+}
+
+function buildKeyboard() {
+  const kbd = document.getElementById('keyboard');
+  kbd.innerHTML = '';
+  function section(labelText, chars, extraClass) {
+    const label = document.createElement('div');
+    label.className = 'kbd-label';
+    label.textContent = labelText;
+    kbd.appendChild(label);
+    const row = document.createElement('div');
+    row.className = 'kbd-row';
+    chars.forEach(ch => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'key' + (extraClass ? ' ' + extraClass : '');
+      btn.textContent = ch === '्' ? '्' : ch;
+      btn.addEventListener('mousedown', e => e.preventDefault()); // don't lose input focus
+      btn.addEventListener('click', () => insertAtCursor(ch));
+      row.appendChild(btn);
+    });
+    kbd.appendChild(row);
+  }
+  section('व्यंजन', CONSONANTS);
+  section('मात्रा', MATRAS, 'matra');
+  section('स्वर', VOWELS);
+  const controls = document.createElement('div');
+  controls.className = 'kbd-row';
+  controls.style.marginTop = '8px';
+  MARKS.forEach(m => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'key';
+    btn.textContent = m === '्' ? '् (हलंत)' : m;
+    if (m === '्') btn.style.minWidth = '0';
+    btn.addEventListener('mousedown', e => e.preventDefault());
+    btn.addEventListener('click', () => insertAtCursor(m));
+    controls.appendChild(btn);
+  });
+  const bksp = document.createElement('button');
+  bksp.type = 'button';
+  bksp.className = 'key control';
+  bksp.textContent = '⌫ मिटाएँ';
+  bksp.addEventListener('mousedown', e => e.preventDefault());
+  bksp.addEventListener('click', backspaceAtCursor);
+  controls.appendChild(bksp);
+  const clr = document.createElement('button');
+  clr.type = 'button';
+  clr.className = 'key control';
+  clr.textContent = 'साफ़';
+  clr.addEventListener('mousedown', e => e.preventDefault());
+  clr.addEventListener('click', () => { wordInput.value = ''; wordInput.focus(); });
+  controls.appendChild(clr);
+  kbd.appendChild(controls);
+}
+
 renderPuzzle();
 renderFound();
+buildKeyboard();
 if (finished) finishPuzzle();
 wordInput.focus();
 </script>
